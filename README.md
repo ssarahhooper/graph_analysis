@@ -59,10 +59,10 @@ python graph_analysis.py karate.gml \
 ```
 ## Approach
 ### Graph I/O
-- read gml using networkx, if a file is directed graph, convert to undirected
-- write gml with computed attributes attached to nodes/edges
+- Read GML using NetworkX, if a file is a directed graph, convert to undirected
+- write GML with computed attributes attached to nodes/edges
 
-### Clustering Coefficents
+### Clustering Coefficients
 - uses nx.clustering(G) to compute per-node clustering coefficents
 - stored on nodes as clustering_coeff
 
@@ -80,16 +80,39 @@ python graph_analysis.py karate.gml \
 - can export each community subgraph to split_output_dir.
 
 ### Random edge failure
+- selects k random edges and removes them from a copy of the graph
+- combines connectivity, LCC average shortest path, and flow (betweenness)
+- computes baseline first, then recomputes after failures on the modified copy
+- computes per-node betweenness deltas and summarizes by mean
 - 
 ### Robustness
-
+- repeats the failure simulation 'runs' times each with k removals
+- reproducible randomness by seeding a local RNG
+- reports avg number of components and avg min/max component sizes across runs
+- works when the graph becomes empty/single
+- 
 ### Homophily verification
-
+- for each node with neighbors, compute the fraction of neighbors sharing a chosen attribute
+- Collect each fraction and test whether the mean differs from 0.5
+- use scipy.stats.ttest_1samp if scipy is available
+- falls back to normal approximation if not
+- I implemented this fallback because I recently learned it in my internship and wanted to practice implementing it in my other projects
+- prints mean, std, t-statistic, p-value, and short interpretation.
 ### Structural Balance
-
+- assumes each edge has a sign attribute
+- BFS labeling, assigning each node a label -1 or 1, along an edge with sign s, the expected label for the neighbor is label[u]*s
+- Any mismatch is flagged as a violation; if no violations are found, then the graph is balanced
+- accepts ints/floats and common strings so parse labeling doesn't throw errors
 ### Temporal Simulation
+- reads a .csv with columns source, target, timestamp, action.
+- sorts by timestamp; applies add/remove events to a working copy
+- creates snapshots; writes an animated GIF if prompted
 
 ### Plotting modes
+- `--plot C`: Nodes sized by clustering coeff; node color = degree; colorbar shows degree
+- `--plot N`: Edges width by neighborhood overlap; edge color = deg(u)+deg(v); nodes colored by degree
+- `--plot P`: node color by a chosen node attribute --attr_color; edge color by sign (positive vs negative)
+- `--plot T`: simple snapshot placeholder (for temporal simulations) 
 
 
 
