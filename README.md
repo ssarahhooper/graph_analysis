@@ -1,4 +1,5 @@
 # graph_analysis
+## Sarah Hooper 032031049
 CECS 427 Graph Analysis Project
 
 ## Setup
