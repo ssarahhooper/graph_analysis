@@ -57,7 +57,6 @@ source,target,timestamp,action
 CVS
 ```
 ```bash
-# CSV header must be: source,target,timestamp,action
 python graph_analysis.py karate.gml --temporal_simulation events.csv --animate_out timeline.gif
 ```
 ## Save annotated graph
