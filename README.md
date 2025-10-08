@@ -44,6 +44,18 @@ python graph_analysis.py homophily.gml --verify_homophily --homophily_attr color
 python graph_analysis.py karate.gml    --verify_homophily --homophily_attr club
 ```
 ## Temporal simulation
+#### Create CSV file
+- I wasn't able to submit the CSV file I created to be able to run a temporal simulation
+```bash
+cat > events.csv <<'CSV'
+source,target,timestamp,action
+0,1,2020-01-01,add
+0,2,2020-01-02,add
+1,3,2020-01-03,add
+2,3,2020-01-04,add
+1,3,2020-01-05,add
+CVS
+```
 ```bash
 # CSV header must be: source,target,timestamp,action
 python graph_analysis.py karate.gml --temporal_simulation events.csv --animate_out timeline.gif
